@@ -1,0 +1,73 @@
+import os
+import time
+import requests
+import webbrowser
+
+def banner():
+    os.system('clear' if os.name == 'posix' else 'cls')
+    print("\033[96m")
+    print("===============================")
+    print("       HL-OSINT TOOLS")
+    print("  Developer: Hazelnut")
+    print("===============================")
+    print("\033[0m")
+    print("\033[91mNOTE: Gunakan tools ini dengan bijak. Penyalahgunaan dapat melanggar hukum!\033[0m")
+
+def menu():
+    print("LIST FITUR OSINT")
+    print("1. Informasi IP Address")
+    print("2. Informasi Nomor HP")
+    print("0. Keluar")
+
+def ip_lookup():
+    ip = input("Masukkan IP: ")
+    try:
+        response = requests.get(f'http://ip-api.com/json/{ip}').json()
+        print("\nHasil Pencarian:")
+        for key, value in response.items():
+            print(f"{key}: {value}")
+    except Exception as e:
+        print(f"Terjadi kesalahan: {e}")
+
+def phone_lookup():
+    phone = input("Masukkan nomor HP (dengan kode negara, contoh: +62): ")
+    url = f'https://api.apilayer.com/number_verification/validate?number={phone}'
+    headers = {'apikey': 'c2f2314649136698bf06cba9def83e08'}
+    try:
+        response = requests.get(url, headers=headers).json()
+        print("\nHasil Pencarian:")
+        for key, value in response.items():
+            print(f"{key}: {value}")
+    except Exception as e:
+        print(f"Terjadi kesalahan: {e}")
+
+def tiktok_prompt():
+    while True:
+        pilihan = input("\nApakah Anda sudah mengikuti Hazelnut di TikTok? (y/n): ")
+        if pilihan.lower() == "y":
+            print("Terima kasih! Keluar...")
+            break
+        elif pilihan.lower() == "n":
+            print("Ayo follow sekarang!")
+            webbrowser.open("https://www.tiktok.com/@hazelnut")
+        else:
+            print("Pilihan tidak valid! Ketik 'y' atau 'n'.")
+
+def main():
+    while True:
+        banner()
+        menu()
+        choice = input("\nPilih menu: ")
+        if choice == "1":
+            ip_lookup()
+        elif choice == "2":
+            phone_lookup()
+        elif choice == "0":
+            tiktok_prompt()
+            break
+        else:
+            print("Pilihan tidak tersedia!")
+        input("\nTekan enter untuk kembali ke menu...")
+
+if __name__ == "__main__":
+    main()
